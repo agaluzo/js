@@ -12,36 +12,30 @@ describe("HOME PAGE", () => {
 
     beforeEach(async () => {
 
-        // await browser.manage().deleteAllCookies();
+         await browser.manage().deleteAllCookies();
         await browser.get(browser.baseUrl);
-        console.log("11---1111111111--------------------------------")
-
-        console.log("1-------111111111111111111111111111111111111111----------------------------")
         await world.HomePage.Header.ContactButton.click()
-        console.log("1-------22222222222222----------------------------")
 
     });
 
-    describe("PAGE TITLE AND URL VERIFICATION", () => {
-
+    describe("Contact page VERIFICATION", () => {
 
 
         it(`verify that 'Contact us' label is displayed`, async () => {
-
             const con = await world.ContactPage.ContactLabel;
-
             con.getText().then(text => {
-
                 expect(text).to.be.equal('Contact us');
             });
         });
 
-        it(`verify that 'Contact us' label is displayed`, async () => {
+        it(`verify error message`, async () => {
 
             const contactButton =  await world.ContactPage.SubmitButton;
-            await contactButton.click();
-            const a = await world.ContactPage.ErrorMessage.getText();
-            return  expect(a).to.be.equal('Please make corrections below and try again.');
+            browser.executeScript("arguments[0].scrollIntoView();", world.ContactPage.SubmitButton);
+            contactButton.click();
+            const a =  world.ContactPage.ErrorMessage;
+            const error = await  a.getText();
+            return  expect(error).to.be.equal('Please make corrections below and try again.');
 
         });
 
